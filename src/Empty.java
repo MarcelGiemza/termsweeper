@@ -6,6 +6,6 @@ public class Empty extends Square {
     }
 
     public void hit () {
-        this.display = (char) amountOfBombs;
+        this.display = (char) String.valueOf(amountOfBombs).charAt(0);
     }
 }

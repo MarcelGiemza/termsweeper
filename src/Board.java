@@ -66,7 +66,7 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    X##
-                    if (x > 0 && y < board.get(0).size() && board.get(x-1).get(y+1) instanceof Bomb) {count += 1;};
+                    if (x > 0 && y < board.get(0).size()-1 && board.get(x-1).get(y+1) instanceof Bomb) {count += 1;};
 
 //                    #X#
 //                    #+#
@@ -75,20 +75,22 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    #X#
-                    if (y < board.get(0).size() && board.get(x).get(y+1) instanceof Bomb) {count += 1;};
+                    if (y < board.get(0).size()-1 && board.get(x).get(y+1) instanceof Bomb) {count += 1;};
 
 //                    ##X
 //                    #+#
 //                    ###
-                    if (x > 0 && y > 0 && board.get(x-1).get(y-1) instanceof Bomb) {count += 1;};
+                    if (x < board.size()-1 && y > 0 && board.get(x+1).get(y-1) instanceof Bomb) {count += 1;};
 //                    ###
 //                    #+X
 //                    ###
-                    if (x > 0 && board.get(x-1).get(y) instanceof Bomb) {count += 1;};
+                    if (x < board.size()-1 && board.get(x+1).get(y) instanceof Bomb) {count += 1;};
 //                    ###
 //                    #+#
 //                    ##X
-                    if (x > 0 && y < board.get(0).size() && board.get(x-1).get(y+1) instanceof Bomb) {count += 1;};
+                    if (x < board.size()-1 && y < board.get(0).size()-1 && board.get(x+1).get(y+1) instanceof Bomb) {count += 1;};
+
+                    ((Empty) board.get(x).get(y)).setAmountOfBombs(count);
                 }
             }
         }
@@ -99,7 +101,6 @@ public final class Board {
             List<Square> col = board.get(i);
             for (int j = 0; j < col.size(); j++) {
                 Square square = col.get(j);
-                square.hit(); // TODO: Delete this hit() after testing
                 square.draw();
                 System.out.print(" ");
             }
