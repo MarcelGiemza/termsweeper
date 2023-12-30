@@ -58,37 +58,41 @@ public final class Board {
 //                    X##
 //                    #+#
 //                    ###
-                    if (x > 0 && y > 0 && board.get(x-1).get(y-1) instanceof Bomb) {count += 1;};
+                    if (x > 0 && y > 0 && board.get(x - 1).get(y - 1) instanceof Bomb) count += 1;
 //                    ###
 //                    X+#
 //                    ###
-                    if (x > 0 && board.get(x-1).get(y) instanceof Bomb) {count += 1;};
+                    if (x > 0 && board.get(x - 1).get(y) instanceof Bomb) count += 1;
 //                    ###
 //                    #+#
 //                    X##
-                    if (x > 0 && y < board.get(0).size()-1 && board.get(x-1).get(y+1) instanceof Bomb) {count += 1;};
+                    if (x > 0 && y < board.get(0).size() - 1 && board.get(x - 1).get(y + 1) instanceof Bomb) count += 1;
 
 //                    #X#
 //                    #+#
 //                    ###
-                    if (y > 0 && board.get(x).get(y-1) instanceof Bomb) {count += 1;};
+                    if (y > 0 && board.get(x).get(y - 1) instanceof Bomb) count += 1;
 //                    ###
 //                    #+#
 //                    #X#
-                    if (y < board.get(0).size()-1 && board.get(x).get(y+1) instanceof Bomb) {count += 1;};
+                    if (y < board.get(0).size() - 1 && board.get(x).get(y + 1) instanceof Bomb) count += 1;
+                    ;
 
 //                    ##X
 //                    #+#
 //                    ###
-                    if (x < board.size()-1 && y > 0 && board.get(x+1).get(y-1) instanceof Bomb) {count += 1;};
+                    if (x < board.size() - 1 && y > 0 && board.get(x + 1).get(y - 1) instanceof Bomb) count += 1;
+                    ;
 //                    ###
 //                    #+X
 //                    ###
-                    if (x < board.size()-1 && board.get(x+1).get(y) instanceof Bomb) {count += 1;};
+                    if (x < board.size() - 1 && board.get(x + 1).get(y) instanceof Bomb) count += 1;
 //                    ###
 //                    #+#
 //                    ##X
-                    if (x < board.size()-1 && y < board.get(0).size()-1 && board.get(x+1).get(y+1) instanceof Bomb) {count += 1;};
+                    if (x < board.size() - 1 && y < board.get(0).size() - 1 && board.get(x + 1).get(y + 1) instanceof Bomb)
+                        count += 1;
+                    ;
 
                     ((Empty) board.get(x).get(y)).setAmountOfBombs(count);
                 }
@@ -106,5 +110,82 @@ public final class Board {
             }
             System.out.println("");
         }
+    }
+
+    public static void hitZerosAround(int x, int y) {
+//                    X##
+//                    #+#
+//                    ###
+        if (x > 0 && y > 0 && board.get(x - 1).get(y - 1).isZero()) board.get(x - 1).get(y - 1).hit(x - 1, y - 1);
+//                    ###
+//                    X+#
+//                    ###
+        if (x > 0 && board.get(x - 1).get(y).isZero()) board.get(x - 1).get(y).hit(x - 1, y);
+//                    ###
+//                    #+#
+//                    X##
+        if (x > 0 && y < board.get(0).size() - 1 && board.get(x - 1).get(y + 1).isZero())
+            board.get(x - 1).get(y + 1).hit(x - 1, y + 1);
+
+//                    #X#
+//                    #+#
+//                    ###
+        if (y > 0 && board.get(x).get(y - 1).isZero()) board.get(x).get(y - 1).hit(x, y - 1);
+//                    ###
+//                    #+#
+//                    #X#
+        if (y < board.get(0).size() - 1 && board.get(x).get(y + 1).isZero()) board.get(x).get(y + 1).hit(x, y + 1);
+
+//                    ##X
+//                    #+#
+//                    ###
+        if (x < board.size() - 1 && y > 0 && board.get(x + 1).get(y - 1).isZero())
+            board.get(x + 1).get(y - 1).hit(x + 1, y - 1);
+//                    ###
+//                    #+X
+//                    ###
+        if (x < board.size() - 1 && board.get(x + 1).get(y).isZero()) board.get(x + 1).get(y).hit(x + 1, y);
+//                    ###
+//                    #+#
+//                    ##X
+        if (x < board.size() - 1 && y < board.get(0).size() - 1 && board.get(x + 1).get(y + 1).isZero())
+            board.get(x + 1).get(y + 1).hit(x + 1, y + 1);
+    }
+
+    public static void hitAllAround(int x, int y) {
+//                    X##
+//                    #+#
+//                    ###
+        if (x > 0 && y > 0) board.get(x - 1).get(y - 1).hit(x - 1, y - 1);
+//                    ###
+//                    X+#
+//                    ###
+        if (x > 0) board.get(x - 1).get(y).hit(x - 1, y);
+//                    ###
+//                    #+#
+//                    X##
+        if (x > 0 && y < board.get(0).size() - 1) board.get(x - 1).get(y + 1).hit(x - 1, y + 1);
+
+//                    #X#
+//                    #+#
+//                    ###
+        if (y > 0) board.get(x).get(y - 1).hit(x, y - 1);
+//                    ###
+//                    #+#
+//                    #X#
+        if (y < board.get(0).size() - 1) board.get(x).get(y + 1).hit(x, y + 1);
+
+//                    ##X
+//                    #+#
+//                    ###
+        if (x < board.size() - 1 && y > 0) board.get(x + 1).get(y - 1).hit(x + 1, y - 1);
+//                    ###
+//                    #+X
+//                    ###
+        if (x < board.size() - 1) board.get(x + 1).get(y).hit(x + 1, y);
+//                    ###
+//                    #+#
+//                    ##X
+        if (x < board.size() - 1 && y < board.get(0).size() - 1) board.get(x + 1).get(y + 1).hit(x + 1, y + 1);
     }
 }

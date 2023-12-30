@@ -10,5 +10,8 @@ public abstract class Square {
             this.display = 'F';
         }
     }
-    public abstract void hit ();
+    public abstract void hit (int x, int y);
+    public boolean isZero() {
+        return this instanceof Empty && ((Empty) this).amountOfBombs == 0;
+    };
 }
