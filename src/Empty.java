@@ -7,7 +7,7 @@ public class Empty extends Square {
 
     public void hit(int x, int y, boolean lost) {
         if (this.display == this.defaultDisplay) {
-            this.display = (char) String.valueOf(amountOfBombs).charAt(0);
+            this.display = String.valueOf(amountOfBombs).charAt(0);
             if (amountOfBombs == 0 && !lost) {
                 Board.hitAllAround(x, y);
                 Board.checkWin();

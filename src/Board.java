@@ -3,15 +3,16 @@ import java.util.List;
 
 public final class Board {
 
-    private static Board INSTANCE;
-
     private static boolean lost;
-    public boolean isLost() {
+
+    public static boolean isLost() {
         return lost;
     }
 
     private static boolean win;
-    public boolean isWon () {
+
+    public static boolean isWon() {
+        checkWin();
         return win;
     }
 
@@ -20,13 +21,6 @@ public final class Board {
     private Board() {
     }
 
-    public static Board getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Board();
-        }
-
-        return INSTANCE;
-    }
 
     private static Integer randomizeNum(int min, int max) {
         return (Integer) (int) Math.floor(Math.random() * (max - min + 1) + min);
@@ -39,7 +33,7 @@ public final class Board {
         avoid.add(ay);
         int amount = Math.round((float) (width * height) * (float) bombPerc / 100);
         List<List<Integer>> minePlaces = new ArrayList<>(amount);
-        board = new ArrayList<List<Square>>(width);
+        board = new ArrayList<>(width);
 
         while (minePlaces.size() < amount) {
             List<Integer> place = new ArrayList<>(2);
@@ -72,41 +66,45 @@ public final class Board {
 //                    X##
 //                    #+#
 //                    ###
-                    if (x > 0 && y > 0 && board.get(x - 1).get(y - 1) instanceof Bomb) count += 1;
+                    if (x > 0 && y > 0 && board.get(x - 1).get(y - 1) instanceof Bomb)
+                        count ++;
 //                    ###
 //                    X+#
 //                    ###
-                    if (x > 0 && board.get(x - 1).get(y) instanceof Bomb) count += 1;
+                    if (x > 0 && board.get(x - 1).get(y) instanceof Bomb)
+                        count ++;
 //                    ###
 //                    #+#
 //                    X##
-                    if (x > 0 && y < board.get(0).size() - 1 && board.get(x - 1).get(y + 1) instanceof Bomb) count += 1;
+                    if (x > 0 && y < board.getFirst().size() - 1 && board.get(x - 1).get(y + 1) instanceof Bomb)
+                        count++;
 
 //                    #X#
 //                    #+#
 //                    ###
-                    if (y > 0 && board.get(x).get(y - 1) instanceof Bomb) count += 1;
+                    if (y > 0 && board.get(x).get(y - 1) instanceof Bomb)
+                        count ++;
 //                    ###
 //                    #+#
 //                    #X#
-                    if (y < board.get(0).size() - 1 && board.get(x).get(y + 1) instanceof Bomb) count += 1;
-                    ;
+                    if (y < board.getFirst().size() - 1 && board.get(x).get(y + 1) instanceof Bomb)
+                        count ++;
 
 //                    ##X
 //                    #+#
 //                    ###
-                    if (x < board.size() - 1 && y > 0 && board.get(x + 1).get(y - 1) instanceof Bomb) count += 1;
-                    ;
+                    if (x < board.size() - 1 && y > 0 && board.get(x + 1).get(y - 1) instanceof Bomb)
+                        count ++;
 //                    ###
 //                    #+X
 //                    ###
-                    if (x < board.size() - 1 && board.get(x + 1).get(y) instanceof Bomb) count += 1;
+                    if (x < board.size() - 1 && board.get(x + 1).get(y) instanceof Bomb)
+                        count ++;
 //                    ###
 //                    #+#
 //                    ##X
-                    if (x < board.size() - 1 && y < board.get(0).size() - 1 && board.get(x + 1).get(y + 1) instanceof Bomb)
-                        count += 1;
-                    ;
+                    if (x < board.size() - 1 && y < board.getFirst().size() - 1 && board.get(x + 1).get(y + 1) instanceof Bomb)
+                        count ++;
 
                     ((Empty) board.get(x).get(y)).setAmountOfBombs(count);
                 }
@@ -120,10 +118,10 @@ public final class Board {
     public static void draw() {
         System.out.print("   | ");
         for (int i = 1; i <= board.size(); i++) {
-            System.out.print((int) Math.floor(i / 10));
+            System.out.print((int) (double) (i / 10));
             System.out.print(" ");
         }
-        System.out.println("");
+        System.out.println();
 
         System.out.print("   | ");
         for (int i = 1; i <= board.size(); i++) {
@@ -137,20 +135,20 @@ public final class Board {
         for (int i = 0; i < board.size() * 2; i++) {
             System.out.print("-");
         }
-        System.out.println("");
+        System.out.println();
 
-        for (int i = 0; i < board.get(0).size(); i++) {
+        for (int i = 0; i < board.getFirst().size(); i++) {
             if (i < 9) {
                 System.out.print(0);
             }
             System.out.print(i + 1);
             System.out.print(" | ");
 
-            for (int j = 0; j < board.size(); j++) {
-                board.get(j).get(i).draw();
+            for (List<Square> squares : board) {
+                squares.get(i).draw();
                 System.out.print(" ");
             }
-            System.out.println("");
+            System.out.println();
         }
         System.out.println(" Y");
     }
@@ -166,10 +164,10 @@ public final class Board {
 
         System.out.print("   | ");
         for (int i = 1; i <= board.size(); i++) {
-            System.out.print((int) Math.floor(i / 10));
+            System.out.print(i / 10);
             System.out.print(" ");
         }
-        System.out.println("");
+        System.out.println();
 
         System.out.print("   | ");
         for (int i = 1; i <= board.size(); i++) {
@@ -183,20 +181,20 @@ public final class Board {
         for (int i = 0; i < board.size() * 2; i++) {
             System.out.print("-");
         }
-        System.out.println("");
+        System.out.println();
 
-        for (int i = 0; i < board.get(0).size(); i++) {
+        for (int i = 0; i < board.getFirst().size(); i++) {
             if (i < 9) {
                 System.out.print(0);
             }
             System.out.print(i + 1);
             System.out.print(" | ");
 
-            for (int j = 0; j < board.size(); j++) {
-                board.get(j).get(i).draw();
+            for (List<Square> squares : board) {
+                squares.get(i).draw();
                 System.out.print(" ");
             }
-            System.out.println("");
+            System.out.println();
         }
         System.out.println(" Y");
     }
@@ -213,7 +211,7 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    X##
-        if (x > 0 && y < board.get(0).size() - 1 && board.get(x - 1).get(y + 1).isZero())
+        if (x > 0 && y < board.getFirst().size() - 1 && board.get(x - 1).get(y + 1).isZero())
             board.get(x - 1).get(y + 1).hit(x - 1, y + 1);
 
 //                    #X#
@@ -223,7 +221,7 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    #X#
-        if (y < board.get(0).size() - 1 && board.get(x).get(y + 1).isZero()) board.get(x).get(y + 1).hit(x, y + 1);
+        if (y < board.getFirst().size() - 1 && board.get(x).get(y + 1).isZero()) board.get(x).get(y + 1).hit(x, y + 1);
 
 //                    ##X
 //                    #+#
@@ -237,7 +235,7 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    ##X
-        if (x < board.size() - 1 && y < board.get(0).size() - 1 && board.get(x + 1).get(y + 1).isZero())
+        if (x < board.size() - 1 && y < board.getFirst().size() - 1 && board.get(x + 1).get(y + 1).isZero())
             board.get(x + 1).get(y + 1).hit(x + 1, y + 1);
     }
 
@@ -253,7 +251,7 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    X##
-        if (x > 0 && y < board.get(0).size() - 1) board.get(x - 1).get(y + 1).hit(x - 1, y + 1);
+        if (x > 0 && y < board.getFirst().size() - 1) board.get(x - 1).get(y + 1).hit(x - 1, y + 1);
 
 //                    #X#
 //                    #+#
@@ -262,7 +260,7 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    #X#
-        if (y < board.get(0).size() - 1) board.get(x).get(y + 1).hit(x, y + 1);
+        if (y < board.getFirst().size() - 1) board.get(x).get(y + 1).hit(x, y + 1);
 
 //                    ##X
 //                    #+#
@@ -275,13 +273,13 @@ public final class Board {
 //                    ###
 //                    #+#
 //                    ##X
-        if (x < board.size() - 1 && y < board.get(0).size() - 1) board.get(x + 1).get(y + 1).hit(x + 1, y + 1);
+        if (x < board.size() - 1 && y < board.getFirst().size() - 1) board.get(x + 1).get(y + 1).hit(x + 1, y + 1);
     }
 
     public static void lose() {
-        for (int i = 0; i < board.size(); i++) {
-            for (int j = 0; j < board.get(0).size(); j++) {
-                board.get(i).get(j).hit(0, 0, true);
+        for (List<Square> squares : board) {
+            for (int j = 0; j < board.getFirst().size(); j++) {
+                squares.get(j).hit(0, 0, true);
             }
         }
         lost = true;
@@ -289,18 +287,19 @@ public final class Board {
 
     public static void checkWin() {
         int totalLeft = 0;
-        for (int i = 0; i < board.size(); i++) {
-            for (int j = 0; j < board.get(0).size(); j++) {
-                Square square = board.get(i).get(j);
-                if (square instanceof Empty && square.display == '#') {
+        for (List<Square> squares : board) {
+            for (int j = 0; j < board.getFirst().size(); j++) {
+                Square square = squares.get(j);
+                if (square instanceof Empty && square.display == square.defaultDisplay) {
                     totalLeft++;
                 }
             }
         }
+
         if (totalLeft == 0) {
-            for (int i = 0; i < board.size(); i++) {
-                for (int j = 0; j < board.get(0).size(); j++) {
-                    board.get(i).get(j).hit(0, 0, true);
+            for (List<Square> squares : board) {
+                for (int j = 0; j < board.getFirst().size(); j++) {
+                    squares.get(j).hit(0, 0, true);
                 }
             }
             win = true;

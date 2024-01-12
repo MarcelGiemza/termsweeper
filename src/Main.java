@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,9 +28,9 @@ public class Main {
                 System.out.print("> ");
                 String selected = reader.readLine().trim();
 
-                int width = 0;
-                int height = 0;
-                int bombPerc = 90;
+                int width;
+                int height;
+                int bombPerc;
 
                 switch (selected) {
                     case "1":
@@ -66,7 +65,7 @@ public class Main {
                         width = 99;
                         height = 99;
                         break;
-                    case null, default:
+                    default:
                         System.out.println("Enter board width [5-99]");
                         System.out.print("> ");
                         width = Integer.parseInt(reader.readLine().trim());
@@ -86,7 +85,7 @@ public class Main {
                     height = 1;
                 }
 
-                System.out.println("Size set to: " + String.valueOf(width) + "x" + String.valueOf(height));
+                System.out.println("Size set to: " + width + "x" + height);
 
                 System.out.println("Enter percentage amount of squares that should be bombs [1-95] (default = 15)");
                 System.out.print("> ");
@@ -101,16 +100,14 @@ public class Main {
                 } catch (Exception e) {
                     bombPerc = 15;
                 }
-                System.out.println("Amount of bombs set to: " + String.valueOf(bombPerc) + "%");
-
-                Board board = Board.getInstance();
+                System.out.println("Amount of bombs set to: " + bombPerc + "%");
 
                 boolean game = true;
 
                 boolean start = true;
                 while (start) {
-                    board.drawEmpty(width, height);
-                    System.out.println("");
+                    Board.drawEmpty(width, height);
+                    System.out.println();
                     System.out.println("Enter command");
                     System.out.println("'{x} {y}' to hit first square");
                     System.out.println("'quit' to quit");
@@ -118,32 +115,34 @@ public class Main {
                     String firstHit = reader.readLine();
                     List<String> command = Arrays.asList(firstHit.split("\\s+"));
                     try {
-                        board.generateNew(width, height, bombPerc, Integer.parseInt(command.get(0)) - 1, Integer.parseInt(command.get(1)) - 1);
+                        Board.generateNew(width, height, bombPerc, Integer.parseInt(command.get(0)) - 1, Integer.parseInt(command.get(1)) - 1);
                         start = false;
                     } catch (Exception e) {
                         if (firstHit.equals("quit")) {
                             start = false;
                             game = false;
                         } else {
-                            System.out.println("");
+                            System.out.println();
                             System.out.println("Something went wrong, please try again");
                         }
                     }
                 }
 
                 while (game) {
-                    board.draw();
+                    System.out.println();
+                    System.out.println();
+                    Board.draw();
 
-                    if (board.isLost()) {
-                        System.out.println("");
+                    if (Board.isLost()) {
+                        System.out.println();
                         System.out.println("You lost!");
                         game = false;
-                    } else if (board.isWon()) {
-                        System.out.println("");
+                    } else if (Board.isWon()) {
+                        System.out.println();
                         System.out.println("You won!");
                         game = false;
                     } else {
-                        System.out.println("");
+                        System.out.println();
                         System.out.println("Enter command");
                         System.out.println("'h {x} {y}' to hit a square");
                         System.out.println("'f {x} {y}' to place flag");
@@ -157,15 +156,15 @@ public class Main {
                         try {
                             switch (command.get(0).toLowerCase()) {
                                 case "f":
-                                    board.board.get(Integer.parseInt(command.get(1)) - 1).get(Integer.parseInt(command.get(2)) - 1).flag();
+                                    Board.board.get(Integer.parseInt(command.get(1)) - 1).get(Integer.parseInt(command.get(2)) - 1).flag();
                                     break;
                                 case "h":
-                                    board.board.get(Integer.parseInt(command.get(1)) - 1).get(Integer.parseInt(command.get(2)) - 1).hit(Integer.parseInt(command.get(1)) - 1, Integer.parseInt(command.get(2)) - 1);
+                                    Board.board.get(Integer.parseInt(command.get(1)) - 1).get(Integer.parseInt(command.get(2)) - 1).hit(Integer.parseInt(command.get(1)) - 1, Integer.parseInt(command.get(2)) - 1);
                                     break;
                                 case "quit":
                                     game = false;
                                     break;
-                                case null, default:
+                                default:
                                     System.out.println("Unknown command");
                             }
                         } catch (IndexOutOfBoundsException e) {
@@ -173,7 +172,7 @@ public class Main {
                         }
                     }
                 }
-                System.out.println("Do you want to play again? [y/n]");
+                System.out.println("Do you want to play again? [y/N]");
                 System.out.print("> ");
                 String again = reader.readLine().trim();
                 if (!(again.equals("y") || again.equals("ye") || again.equals("yes"))) {
