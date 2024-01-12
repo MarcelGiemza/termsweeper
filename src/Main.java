@@ -167,8 +167,8 @@ public class Main {
                                 default:
                                     System.out.println("Unknown command");
                             }
-                        } catch (IndexOutOfBoundsException e) {
-                            System.out.println("x or y was too high");
+                        } catch (Exception e) {
+                            System.out.println("Something went wrong, try again.");
                         }
                     }
                 }
