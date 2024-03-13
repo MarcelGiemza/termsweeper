@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +21,7 @@ public class Main {
                 System.out.println("8. 99x99");
                 System.out.println("9. custom");
 
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(System.in));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
                 System.out.print("> ");
                 String selected = reader.readLine().trim();
@@ -68,34 +66,44 @@ public class Main {
                     default:
                         System.out.println("Enter board width [5-99]");
                         System.out.print("> ");
-                        width = Integer.parseInt(reader.readLine().trim());
+                        try {
+                            width = Integer.parseInt(reader.readLine().trim());
+                        } catch (Exception e) {
+                            width = 10;
+                            System.out.println("Incorrect width, setting to 10");
+                        }
                         System.out.println("Enter board height [5-99]");
                         System.out.print("> ");
-                        height = Integer.parseInt(reader.readLine().trim());
+                        try {
+                            height = Integer.parseInt(reader.readLine().trim());
+                        } catch (Exception e) {
+                            height = 10;
+                            System.out.println("Incorrect height, setting to 10");
+                        }
                 }
 
                 if (width > 99) {
                     width = 99;
                 } else if (width < 5) {
-                    width = 1;
+                    width = 5;
                 }
                 if (height > 99) {
                     height = 99;
                 } else if (height < 5) {
-                    height = 1;
+                    height = 5;
                 }
 
                 System.out.println("Size set to: " + width + "x" + height);
 
-                System.out.println("Enter percentage amount of squares that should be bombs [1-95] (default = 15)");
+                System.out.println("Enter percentage amount of squares that should be bombs [5-95] (default = 15)");
                 System.out.print("> ");
                 String bp = reader.readLine().trim();
                 try {
                     bombPerc = Integer.parseInt(bp);
                     if (bombPerc > 95) {
                         bombPerc = 95;
-                    } else if (bombPerc < 1) {
-                        bombPerc = 1;
+                    } else if (bombPerc < 5) {
+                        bombPerc = 5;
                     }
                 } catch (Exception e) {
                     bombPerc = 15;
@@ -135,11 +143,11 @@ public class Main {
 
                     if (Board.isLost()) {
                         System.out.println();
-                        System.out.println("You lost!");
+                        System.out.println("\u001b[41m\u001b[30m You lost! \u001b[0m");
                         game = false;
                     } else if (Board.isWon()) {
                         System.out.println();
-                        System.out.println("You won!");
+                        System.out.println("\u001b[42m\u001b[30m You won! \u001b[0m");
                         game = false;
                     } else {
                         System.out.println();
@@ -174,12 +182,12 @@ public class Main {
                 }
                 System.out.println("Do you want to play again? [y/N]");
                 System.out.print("> ");
-                String again = reader.readLine().trim();
+                String again = reader.readLine().trim().toLowerCase();
                 if (!(again.equals("y") || again.equals("ye") || again.equals("yes"))) {
                     play = false;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

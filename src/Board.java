@@ -297,11 +297,11 @@ public final class Board {
         }
 
         if (totalLeft == 0) {
-            for (List<Square> squares : board) {
-                for (int j = 0; j < board.getFirst().size(); j++) {
-                    squares.get(j).hit(0, 0, true);
-                }
-            }
+//            for (List<Square> squares : board) {
+//                for (int j = 0; j < board.getFirst().size(); j++) {
+//                    squares.get(j).hit(0, 0, true);
+//                }
+//            }
             win = true;
         }
     }
